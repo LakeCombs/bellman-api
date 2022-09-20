@@ -18,7 +18,10 @@ export interface IUser extends Document {
 	comparePassword(password: string): Promise<Boolean>;
 }
 
-export interface ULogin extends IUser {
+export interface UserData extends IUser {
+	user_token?: string;
+}
+export interface ULogin {
 	email: string;
 	password: string;
 }

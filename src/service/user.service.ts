@@ -1,9 +1,9 @@
-import { string } from "zod";
 import { Query_interface } from "./../interfaces/query.interface";
-import { IUser, ULogin } from "./../interfaces/user.interface";
+import { IUser, ULogin, UserData } from "./../interfaces/user.interface";
 import User from "../model/user.model";
 import logger from "../utils/logger";
 import { generate_token } from "../middleware/JWT";
+import { FilterQuery, QueryOptions, UpdateQuery } from "mongoose";
 
 export const CREATE_USER = async (
 	input: IUser
@@ -29,11 +29,17 @@ export const CREATE_USER = async (
 	}
 };
 
-export const LOGIN_USER = async (input: ULogin): Promise<any> => {
+export const LOGIN_USER = async ({
+	email,
+	password,
+}: {
+	email: string;
+	password: string;
+}): Promise<any> => {
 	try {
 		const action = "User login";
 
-		if (!input.email || !input.password) {
+		if (!email || !password) {
 			return {
 				status: false,
 				action: action,
@@ -41,7 +47,7 @@ export const LOGIN_USER = async (input: ULogin): Promise<any> => {
 			};
 		}
 
-		const user = await User.findOne({ email: input.email })
+		const user = await User.findOne({ email: email })
 			.populate("cart")
 			.populate("purchased");
 
@@ -53,25 +59,51 @@ export const LOGIN_USER = async (input: ULogin): Promise<any> => {
 			};
 		}
 
-		const confirmPassword: Boolean = await user.comparePassword(input.password);
+		const confirmPassword: Boolean = await user.comparePassword(password);
 
 		if (user && confirmPassword) {
 			return {
-				message: "welcome back to bellman",
-				data: {
-					...user,
-					user_token: generate_token(user._id),
-				},
+				message: `welcome back to bellman `,
+				data: { user, user_token: generate_token(user?._id) },
 				status: true,
+				action: action,
 			};
 		}
-	} catch (error) {
-		logger.error(error);
+	} catch (error: any) {
+		logger.error(error.message);
 		return {
-			error: error,
+			error: error.message,
 			status: false,
 			message:
 				"sorry an error occoured during login, check your email and password and try again",
 		};
 	}
 };
+
+export async function UPDATE_USER(
+	query: FilterQuery<IUser>,
+	data: UpdateQuery<IUser>,
+	options: QueryOptions
+): Promise<Query_interface<IUser>> {
+	try {
+		const action = "update user details";
+		const updating = await User.findByIdAndUpdate(query, data, options)
+			.populate("purchased")
+			.populate("cart");
+
+		return {
+			status: true,
+			message: "update applied sucessfully",
+			action,
+			data: { updating, user_token: generate_token(updating?._id) },
+		};
+	} catch (error: any) {
+		logger.error(error.message);
+		return {
+			error: error,
+			status: false,
+			action: "User update",
+			message: "sorry an error occoured while update user details",
+		};
+	}
+}

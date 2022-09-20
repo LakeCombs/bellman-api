@@ -1,8 +1,8 @@
 export interface Query_interface<payload> {
 	status: boolean;
-	action: string;
+	action?: string;
 	message?: string;
 	payload?: payload | null;
-	data?: object | null;
+	data?: any | null;
 	error?: any;
 }

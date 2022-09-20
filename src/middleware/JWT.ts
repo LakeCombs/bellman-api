@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import { JWTDecode } from "../interfaces/JWTDecode.interface";
 
-export function generate_token(payload: string): string {
-	return jwt.sign(payload, process.env.JWT_PRIVATE_KEY as string);
+export function generate_token(payload: object): string {
+	return jwt.sign({ payload }, process.env.JWT_PRIVATE_KEY as string);
 }
 
 export function verifyJWT(token: string): JWTDecode {
