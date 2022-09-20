@@ -1,7 +1,7 @@
 import { Document, ObjectId, Types } from "mongoose";
 
 export interface IUser extends Document {
-    create: any;
+	create: any;
 	first_name: string;
 	last_name: string;
 	email: string;
@@ -15,5 +15,10 @@ export interface IUser extends Document {
 	password: string;
 	createdAt: Date;
 	updatedAt: Date;
-	compatePassword(password: string): Promise<Boolean>;
+	comparePassword(password: string): Promise<Boolean>;
+}
+
+export interface ULogin extends IUser {
+	email: string;
+	password: string;
 }
