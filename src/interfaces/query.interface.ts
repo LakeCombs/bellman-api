@@ -3,6 +3,6 @@ export interface Query_interface<payload> {
 	action: string;
 	message?: string;
 	payload?: payload | null;
-	data?: any | null;
+	data?: object | null;
 	error?: any;
 }

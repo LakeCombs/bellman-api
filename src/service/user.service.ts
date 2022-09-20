@@ -29,7 +29,7 @@ export const CREATE_USER = async (
 	}
 };
 
-export const LOGIN = async (input: ULogin) => {
+export const LOGIN_USER = async (input: ULogin): Promise<any> => {
 	try {
 		const action = "User login";
 
