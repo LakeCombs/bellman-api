@@ -9,6 +9,7 @@ const userSchema: Schema = new mongoose.Schema<IUser>(
 		last_name: { type: String },
 		password: { type: String },
 		phone: { type: String },
+		is_admin: { type: Boolean, default: false },
 		cart: [{ type: Schema.Types.ObjectId, ref: "Product" }],
 		purchased: [{ type: Schema.Types.ObjectId, ref: "Product" }],
 	},

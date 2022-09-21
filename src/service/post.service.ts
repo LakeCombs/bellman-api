@@ -1,4 +1,4 @@
-import { UpdateQuery } from "mongoose";
+import { FilterQuery, ObjectId, UpdateQuery } from "mongoose";
 import { Query_interface } from "./../interfaces/query.interface";
 import { IPost } from "./../interfaces/post.interface";
 import Post from "../model/post.model";
@@ -6,7 +6,7 @@ import logger from "../utils/logger";
 import Comment from "../model/comment.model";
 
 export const CREATE_POST = async (
-	authorid: string,
+	authorid: ObjectId,
 	input: IPost
 ): Promise<Query_interface<IPost>> => {
 	const action = "Creating a post";
@@ -20,7 +20,7 @@ export const CREATE_POST = async (
 			};
 		}
 
-		const new_post: IPost = await Post.create({ input, author: authorid });
+		const new_post: IPost = await Post.create({ ...input, author: authorid });
 		return {
 			status: true,
 			action: action,
@@ -45,9 +45,14 @@ export const EDIT_POST = async (
 	const action = "Editing a post";
 
 	try {
-		const editpost = Post.findByIdAndUpdate(postid, input, {
-			new: true,
-		});
+		const editpost: IPost | null = await Post.findByIdAndUpdate(
+			{ _id: postid },
+			input,
+			{
+				new: true,
+			}
+		);
+
 		return {
 			status: true,
 			action: action,
@@ -195,6 +200,7 @@ export const LIKE_A_POST = async (
 			},
 		]);
 
+		console.log("the update post is ", likeThePost);
 		return {
 			status: true,
 			action: action,
@@ -207,7 +213,7 @@ export const LIKE_A_POST = async (
 			error: error.message,
 			status: false,
 			action: action,
-			message: "sorry an error occoured while deleting this post",
+			message: "sorry an error occoured while liking this post",
 		};
 	}
 };

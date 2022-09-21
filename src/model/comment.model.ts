@@ -8,7 +8,7 @@ const CommentSchema = new mongoose.Schema<IComment>(
 			ref: "Post",
 			required: true,
 		},
-		comment: { type: String, required: true, minlength: 50 },
+		comment: { type: String, required: true },
 		user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 	},
 	{ timestamps: true }

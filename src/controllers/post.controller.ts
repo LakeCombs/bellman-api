@@ -1,7 +1,7 @@
-import { CREATE_PRODUCT } from "../service/product.service";
 import { Request, Response } from "express";
 import {
 	COMMENT_ON_A_POST,
+	CREATE_POST,
 	DELETE_POST,
 	EDIT_POST,
 	GET_ALL_POST,
@@ -15,7 +15,7 @@ export async function createPostHandler(
 	res: Response
 ): Promise<void> {
 	const authorid = res.locals.user._id;
-	const service = await CREATE_PRODUCT({ authorid, ...req.body });
+	const service = await CREATE_POST(authorid, req.body);
 
 	service.status
 		? res.status(201).json(service)
@@ -27,8 +27,8 @@ export async function editPostHandler(
 	res: Response
 ): Promise<void> {
 	const postid = req.params.id;
-	const service = await EDIT_POST(postid, req.body);
 
+	const service = await EDIT_POST(postid, req.body);
 	service.status
 		? res.status(201).json(service)
 		: res.status(400).json(service);

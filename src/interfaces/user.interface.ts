@@ -8,7 +8,6 @@ export interface IUser extends Document {
 	contact_address: string;
 	is_admin: boolean;
 	cart: string[];
-
 	purchased: string[];
 	// purchased: Types.Array<ObjectId>;/
 	phone: string;
