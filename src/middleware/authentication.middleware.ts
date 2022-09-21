@@ -15,20 +15,38 @@ export async function auth(req: Request, res: Response, next: NextFunction) {
 		try {
 			user_token = req.headers.authorization.split(" ")[1];
 			let userid = verifyJWT(user_token);
-			console.log("the user id ", userid);
-			const user = await User.findById(userid).select("-password");
+
+			if (userid.expired) {
+				return res.status(404).json({
+					status: false,
+					message: "Your session has expired please login and try again ",
+				});
+			}
+
+			const user = await User.findById(userid.decoded.payload).select(
+				"-password"
+			);
+
 			res.locals.user = user;
 			res.locals.user_id = userid;
 			return next();
-		} catch (error) {
-			logger.error(error);
-			return res
-				.status(401)
-				.json({ message: "Not authorized, user_token failed" });
+		} catch (error: any) {
+			logger.error(error.message);
+			return res.status(401).json({
+				status: false,
+				message:
+					"You are not authorized to preform this operation, please login and try again",
+			});
 		}
 	}
 
 	if (!user_token) {
-		return res.status(400).json({ message: "Not authorized, no user_token" });
+		return res
+			.status(400)
+			.json({
+				status: false,
+				message:
+					"You are not authorized to perfom this operation please login and try again, no user_token",
+			});
 	}
 }

@@ -105,7 +105,7 @@ export const GET_A_PRODUCT = async (
 };
 
 export const GET_PRODUCT_BY_NAME = async (
-	query: QueryOptions
+	query: string
 ): Promise<Query_interface<IProduct>> => {
 	const action = "get product by name ";
 
@@ -138,7 +138,7 @@ export const GET_PRODUCT_BY_NAME = async (
 };
 
 export const GET_PRODUCT_BY_CATEGORY = async (
-	query: QueryOptions
+	query: string
 ): Promise<Query_interface<IProduct>> => {
 	const action = "Get product by category";
 	try {
@@ -165,9 +165,9 @@ export const GET_PRODUCT_BY_CATEGORY = async (
 };
 
 export const ADD_PRODUCT_TO_CART = async (
-	id: QueryOptions<IProduct>,
+	productid: string,
 	// userid: string,
-	userid: UpdateQuery<IUser>,
+	userid: string,
 	options: QueryOptions
 ): Promise<Query_interface<IpOptions>> => {
 	const action = "Adding product to cart";
@@ -178,11 +178,13 @@ export const ADD_PRODUCT_TO_CART = async (
 			{ _id: userid },
 			{
 				$push: {
-					cart: id,
+					cart: productid,
 				},
 			},
-			(options = { new: true })
-		);
+			options
+		)
+			.populate("purchased")
+			.populate("cart");
 
 		return {
 			status: true,
@@ -202,10 +204,8 @@ export const ADD_PRODUCT_TO_CART = async (
 };
 
 export const REMOVE_PRODUCT_FROM_CART = async (
-	id: QueryOptions<IProduct>,
-	// userid: string,
-	userid: UpdateQuery<IUser>,
-	options: QueryOptions
+	productid: string,
+	userid: string
 ): Promise<Query_interface<IUser>> => {
 	const action = "Removing product from cart";
 
@@ -214,10 +214,10 @@ export const REMOVE_PRODUCT_FROM_CART = async (
 			{ _id: userid },
 			{
 				$push: {
-					cart: id,
+					cart: productid,
 				},
 			},
-			(options = { new: true })
+			{ new: true }
 		);
 
 		return {
