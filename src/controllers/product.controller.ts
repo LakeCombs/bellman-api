@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import {
 	ADD_PRODUCT_TO_CART,
+	ADD_PRODUCT_TO_PURCHASED,
 	CREATE_PRODUCT,
+	DELETE_PRODUCT,
+	EDIT_PRODUCT,
 	GET_ALL_PRODUCT,
 	GET_PRODUCT_BY_CATEGORY,
 	GET_PRODUCT_BY_NAME,
@@ -61,8 +64,6 @@ export async function addProductToCartHandler(
 	const productid = req.params.id;
 	const userid = res.locals.user._id;
 
-	console.log("the use id is ", userid);
-
 	const service = await ADD_PRODUCT_TO_CART(`${productid}`, userid, {
 		new: true,
 	});
@@ -78,9 +79,46 @@ export async function removeProductFromCartHandler(
 	const productid = req.params.id;
 	const userid = res.locals.user._id;
 
-	console.log("the use id is ", userid);
-
 	const service = await REMOVE_PRODUCT_FROM_CART(`${productid}`, userid);
+
+	service.status
+		? res.status(200).json(service)
+		: res.status(404).json(service);
+}
+
+export async function addProductToPurchased(
+	req: Request,
+	res: Response
+): Promise<void> {
+	const productid = req.params.id;
+	const userid = res.locals.user._id;
+
+	const service = await ADD_PRODUCT_TO_PURCHASED(`${productid}`, userid);
+
+	service.status
+		? res.status(200).json(service)
+		: res.status(404).json(service);
+}
+
+export async function editProductHandler(
+	req: Request,
+	res: Response
+): Promise<void> {
+	const productid = req.params.id;
+	const userid = res.locals.user.id;
+	const service = await EDIT_PRODUCT(productid, req.body);
+
+	service.status
+		? res.status(200).json(service)
+		: res.status(404).json(service);
+}
+
+export async function deleteProductHandler(
+	req: Request,
+	res: Response
+): Promise<void> {
+	const productid = req.params.id;
+	const service = await DELETE_PRODUCT(productid);
 
 	service.status
 		? res.status(200).json(service)

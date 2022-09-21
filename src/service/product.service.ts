@@ -57,13 +57,14 @@ export const GET_ALL_PRODUCT = async (): Promise<
 };
 
 export const EDIT_PRODUCT = async (
-	query: FilterQuery<IProduct>,
-	data: UpdateQuery<IProduct>,
-	options: QueryOptions
+	query: string,
+	data: UpdateQuery<IProduct>
 ): Promise<Query_interface<IProduct>> => {
 	const action = "editing a product";
 	try {
-		const edit_product = await Product.findByIdAndUpdate(query, data, options);
+		const edit_product = await Product.findByIdAndUpdate(query, data, {
+			new: true,
+		});
 		return {
 			status: true,
 			message: "this product have been updated applied sucessfully",
@@ -238,10 +239,8 @@ export const REMOVE_PRODUCT_FROM_CART = async (
 };
 
 export const ADD_PRODUCT_TO_PURCHASED = async (
-	id: QueryOptions<IProduct>,
-	// userid: string,
-	userid: UpdateQuery<IUser>,
-	options: QueryOptions
+	productid: string,
+	userid: string
 ): Promise<Query_interface<IUser>> => {
 	const action = "purchasing an product";
 	try {
@@ -249,10 +248,10 @@ export const ADD_PRODUCT_TO_PURCHASED = async (
 			{ _id: userid },
 			{
 				$push: {
-					purchased: id,
+					purchased: productid,
 				},
 			},
-			(options = { new: true })
+			{ new: true }
 		)
 			.populate("cart")
 			.populate("purchased");
@@ -275,7 +274,7 @@ export const ADD_PRODUCT_TO_PURCHASED = async (
 };
 
 export const DELETE_PRODUCT = async (
-	id: QueryOptions
+	id: string
 ): Promise<Query_interface<IProduct>> => {
 	const action = "Deleting this product";
 
