@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import postRoute from "../routes/post.routes";
 import productRoute from "../routes/product.routes";
 import userRoute from "../routes/user.routes";
 
@@ -13,5 +14,6 @@ v1.get("/", (req: Request, res: Response) => {
 });
 v1.use("/v1/user", userRoute);
 v1.use("/v1/product", productRoute);
+v1.use("/v1/post", postRoute);
 
 export default v1;

@@ -167,7 +167,6 @@ export const GET_PRODUCT_BY_CATEGORY = async (
 
 export const ADD_PRODUCT_TO_CART = async (
 	productid: string,
-	// userid: string,
 	userid: string,
 	options: QueryOptions
 ): Promise<Query_interface<IpOptions>> => {

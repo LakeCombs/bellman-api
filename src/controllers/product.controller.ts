@@ -27,7 +27,6 @@ export async function getAllProduct(
 	res: Response
 ): Promise<void> {
 	const service = await GET_ALL_PRODUCT();
-
 	service.status
 		? res.status(200).json(service)
 		: res.status(404).json(service);
@@ -105,7 +104,6 @@ export async function editProductHandler(
 	res: Response
 ): Promise<void> {
 	const productid = req.params.id;
-	const userid = res.locals.user.id;
 	const service = await EDIT_PRODUCT(productid, req.body);
 
 	service.status
