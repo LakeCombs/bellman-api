@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import v1 from "./version/v1";
 import morgan from "morgan";
 import connectDB from "./utils/connectDB";
+import swaggerDocs from "./utils/swagger";
 
 dotenv.config();
 
@@ -23,4 +24,5 @@ app
 
 app.listen(PORT, () => {
 	logger.info(`App is running at http://localhost:${PORT}`);
+	swaggerDocs(app, PORT);
 });
