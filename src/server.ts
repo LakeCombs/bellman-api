@@ -13,7 +13,7 @@ dotenv.config();
 connectDB();
 
 const app: Express = express();
-const PORT = process.env.PORT;
+const PORT: number = <number>(<unknown>process.env.PORT);
 
 app
 	.use(express.json())
@@ -21,6 +21,8 @@ app
 	.use(cors())
 	.use(morgan("tiny"))
 	.use("/api", v1);
+
+// swaggerDocs(app, PORT);
 
 app.listen(PORT, () => {
 	logger.info(`App is running at http://localhost:${PORT}`);

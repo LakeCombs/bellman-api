@@ -5,6 +5,47 @@ import logger from "../utils/logger";
 import { generate_token } from "../middleware/JWT";
 import { FilterQuery, QueryOptions, UpdateQuery } from "mongoose";
 
+/**
+ * @openapi
+ * components:
+ * 	schemas:
+ *		CreateUserInput:
+ *			type: object
+ *			required:
+ *				- email
+ *				- first_name
+ *				- last_name
+ *				- password
+ *			properties:
+ *				email:
+ *					type: string
+ *					default: lakecombs@gmail.com
+ *				first_name:
+ *					type:string
+ *					default: lake
+ *				last_name:
+ *					type:string
+ *					default: combs
+ *				password:
+ *					type:string
+ *					default: mypassword1234
+ * 		CreateUserResponse:
+ *      	type: object
+ * 			properties:
+ *        		email:
+ *     		    	type: string
+ *        		first_name:
+ *          		type: string
+ *        		last_name:
+ *          		type: string
+ *       		 _id:
+ *          		type: string
+ *        		createdAt:
+ *          		type: string
+ *        		updatedAt:
+ *          		type: string
+ */
+
 export const CREATE_USER = async (
 	input: IUser
 ): Promise<Query_interface<IUser>> => {

@@ -7,6 +7,31 @@ import { IpOptions } from "@hapi/joi";
 import { IUser } from "../interfaces/user.interface";
 import User from "../model/user.model";
 
+// /**
+//  * @openapi
+//  * components:
+//  * 	schemas:
+//  * 		product:
+//  * 			type:object
+//  * 			required
+//  * 				- name
+//  * 				- description
+//  * 				- price
+//  * 			properties:
+//  * 				title:
+//  * 					type:string
+//  * 				description:
+//  * 					type:description
+//  * 				price:
+//  * 					type:number
+//  * 				currency:
+//  * 					type:string
+//  * 				category:
+//  * 					type: array
+//  * 				image_urls:
+//  * 					type:string
+//  *
+//  */
 export const CREATE_PRODUCT = async (
 	input: IProduct
 ): Promise<Query_interface<IProduct>> => {
