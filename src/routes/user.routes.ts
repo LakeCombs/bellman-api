@@ -13,9 +13,22 @@ import {
 
 const userRoute = Router();
 
+/**
+ * @openapi
+ * '/api/v1'
+ *	get:
+ *		tags:
+ *		- Healthcheck
+ *		description: Responds if the app is up and running
+ *		responses:
+ *			200:
+ *				desctription: Welcome to bellman's api 1.0.0
+ *
+ */
 userRoute.get("/", (req, res) => {
-	return res.status(200).send("hello lakes");
+	return res.status(200).send("Welcome to bellman's api 1.0.0");
 });
+
 userRoute.post("/signup", validate(createUserSchema), createUserHandler);
 userRoute.post("/login", validate(createUserLoginSchmea), createLoginHandler);
 userRoute.put("/:id", validate(updateUserSchema), createUpdateUserHandler);

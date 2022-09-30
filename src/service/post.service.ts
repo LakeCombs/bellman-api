@@ -1,14 +1,14 @@
 import { FilterQuery, ObjectId, UpdateQuery } from "mongoose";
 import { Query_interface } from "./../interfaces/query.interface";
-import { IPost } from "./../interfaces/post.interface";
+import { Post_Interface } from "./../interfaces/post.interface";
 import Post from "../model/post.model";
 import logger from "../utils/logger";
 import Comment from "../model/comment.model";
 
 export const CREATE_POST = async (
 	authorid: ObjectId,
-	input: IPost
-): Promise<Query_interface<IPost>> => {
+	input: Post_Interface
+): Promise<Query_interface<Post_Interface>> => {
 	const action = "Creating a post";
 	try {
 		if (!input.title || !input.content) {
@@ -20,7 +20,10 @@ export const CREATE_POST = async (
 			};
 		}
 
-		const new_post: IPost = await Post.create({ ...input, author: authorid });
+		const new_post: Post_Interface = await Post.create({
+			...input,
+			author: authorid,
+		});
 		return {
 			status: true,
 			action: action,
@@ -40,12 +43,12 @@ export const CREATE_POST = async (
 
 export const EDIT_POST = async (
 	postid: string,
-	input: UpdateQuery<IPost>
-): Promise<Query_interface<IPost>> => {
+	input: UpdateQuery<Post_Interface>
+): Promise<Query_interface<Post_Interface>> => {
 	const action = "Editing a post";
 
 	try {
-		const editpost: IPost | null = await Post.findByIdAndUpdate(
+		const editpost: Post_Interface | null = await Post.findByIdAndUpdate(
 			{ _id: postid },
 			input,
 			{
@@ -70,11 +73,13 @@ export const EDIT_POST = async (
 	}
 };
 
-export const GET_ALL_POST = async (): Promise<Query_interface<IPost>> => {
+export const GET_ALL_POST = async (): Promise<
+	Query_interface<Post_Interface>
+> => {
 	const action = "Getting all post";
 
 	try {
-		const allpost: IPost[] = await Post.find()
+		const allpost: Post_Interface[] = await Post.find()
 			.sort({ createdAt: -1 })
 			.populate("author");
 		return {
@@ -96,12 +101,12 @@ export const GET_ALL_POST = async (): Promise<Query_interface<IPost>> => {
 
 export const GET_POST_BY_ID = async (
 	postid: string
-): Promise<Query_interface<IPost>> => {
+): Promise<Query_interface<Post_Interface>> => {
 	const action = "Get a post by id";
 	try {
-		const postById: IPost | null = await Post.findById(postid).populate(
-			"author"
-		);
+		const postById: Post_Interface | null = await Post.findById(
+			postid
+		).populate("author");
 		return {
 			status: true,
 			action: action,
@@ -121,10 +126,10 @@ export const GET_POST_BY_ID = async (
 
 export const GET_POST_BY_KEYWORD = async (
 	query: string
-): Promise<Query_interface<IPost>> => {
+): Promise<Query_interface<Post_Interface>> => {
 	const action = "get post by keyword";
 	try {
-		const postByKeyWord: IPost[] = await Post.find({
+		const postByKeyWord: Post_Interface[] = await Post.find({
 			$or: [
 				{
 					title: { $regex: query, $options: "i" },
@@ -152,11 +157,13 @@ export const GET_POST_BY_KEYWORD = async (
 
 export const DELETE_POST = async (
 	postid: string
-): Promise<Query_interface<IPost>> => {
+): Promise<Query_interface<Post_Interface>> => {
 	const action = "Delete a post";
 
 	try {
-		const deleteAPost: IPost | null = await Post.findByIdAndDelete(postid);
+		const deleteAPost: Post_Interface | null = await Post.findByIdAndDelete(
+			postid
+		);
 
 		return {
 			status: true,
@@ -178,7 +185,7 @@ export const DELETE_POST = async (
 export const LIKE_A_POST = async (
 	postid: string,
 	userid: string
-): Promise<Query_interface<IPost>> => {
+): Promise<Query_interface<Post_Interface>> => {
 	const action = "Like a post";
 
 	try {
@@ -222,7 +229,7 @@ export const COMMENT_ON_A_POST = async (
 	postid: string,
 	userid: string,
 	input: any
-): Promise<Query_interface<IPost>> => {
+): Promise<Query_interface<Post_Interface>> => {
 	const action = "Liking a post";
 	try {
 		const create_comment = await Comment.create({

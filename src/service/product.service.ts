@@ -1,45 +1,72 @@
 import { FilterQuery, Query, QueryOptions, UpdateQuery } from "mongoose";
 import { Query_interface } from "./../interfaces/query.interface";
-import { IProduct } from "./../interfaces/product.interface";
+import { Product_Interface } from "./../interfaces/product.interface";
 import logger from "../utils/logger";
 import Product from "../model/product.model";
 import { IpOptions } from "@hapi/joi";
-import { IUser } from "../interfaces/user.interface";
+import { User_Interface } from "../interfaces/user.interface";
 import User from "../model/user.model";
 
 // /**
 //  * @openapi
 //  * components:
-//  * 	schemas:
-//  * 		product:
-//  * 			type:object
-//  * 			required
-//  * 				- name
-//  * 				- description
-//  * 				- price
-//  * 			properties:
-//  * 				title:
-//  * 					type:string
-//  * 				description:
-//  * 					type:description
-//  * 				price:
-//  * 					type:number
-//  * 				currency:
-//  * 					type:string
-//  * 				category:
-//  * 					type: array
-//  * 				image_urls:
-//  * 					type:string
-//  *
+//  *  schemas:
+//  *    CreateProductInput:
+//  *      type: object
+//  *      required:
+//  *        - name
+//  *        - description
+//  *        - price
+//  *       properties:
+//  *        name:
+//  *          type: string
+//  *          default: a touque shoe
+//  *        description:
+//  *          type: string
+//  *          default: a new touque shoe with amber feather feet massagable platfrom for all type of outfit
+//  *        price:
+//  *          type: number
+//  *          default: 10000
+//  *        currency:
+//  *          type: string
+//  *          default: NGN
+//  *        category:
+//  *          type: array
+//  *          default: [men, vogue, shoe]
+//  *        image_urls:
+//  *          type: array
+//  *          default: [imgurl1, imgurl2, imgurl3]
+//  *    CreateProductResponse:
+//  *      type: object
+//  *      properties:
+//  *        name:
+//  *          type: string
+//  *        description:
+//  *          type: string
+//  *        price:
+//  *          type: number
+//  *        _id:
+//  *          type: string
+//  * 		  currency:
+//  * 			type:string
+//  * 		  image_urls:
+//  * 			type: array
+//  * 		  category:
+//  * 			type: array
+//  *        createdAt:
+//  *          type: string
+//  *        updatedAt:
+//  *          type: string
 //  */
+
 export const CREATE_PRODUCT = async (
-	input: IProduct
-): Promise<Query_interface<IProduct>> => {
+	input: Product_Interface
+): Promise<Query_interface<Product_Interface>> => {
 	const action = "Creating a product";
 
 	try {
 		// const validatedinput = ProductSchema.validate(input);
-		const new_product: IProduct = await Product.create(input);
+		const new_product: Product_Interface = await Product.create(input);
 		return {
 			status: true,
 			action: action,
@@ -58,12 +85,12 @@ export const CREATE_PRODUCT = async (
 };
 
 export const GET_ALL_PRODUCT = async (): Promise<
-	Query_interface<[IProduct]>
+	Query_interface<[Product_Interface]>
 > => {
 	const action = "getting all the product";
 
 	try {
-		const all_product: IProduct[] = await Product.find();
+		const all_product: Product_Interface[] = await Product.find();
 		return {
 			status: true,
 			action: action,
@@ -83,8 +110,8 @@ export const GET_ALL_PRODUCT = async (): Promise<
 
 export const EDIT_PRODUCT = async (
 	query: string,
-	data: UpdateQuery<IProduct>
-): Promise<Query_interface<IProduct>> => {
+	data: UpdateQuery<Product_Interface>
+): Promise<Query_interface<Product_Interface>> => {
 	const action = "editing a product";
 	try {
 		const edit_product = await Product.findByIdAndUpdate(query, data, {
@@ -109,7 +136,7 @@ export const EDIT_PRODUCT = async (
 
 export const GET_A_PRODUCT = async (
 	query: QueryOptions
-): Promise<Query_interface<IProduct>> => {
+): Promise<Query_interface<Product_Interface>> => {
 	const action = "Get a product by id";
 	try {
 		const singleproduct = await Product.findById(query);
@@ -132,13 +159,13 @@ export const GET_A_PRODUCT = async (
 
 export const GET_PRODUCT_BY_NAME = async (
 	query: string
-): Promise<Query_interface<IProduct>> => {
+): Promise<Query_interface<Product_Interface>> => {
 	const action = "get product by name ";
 
 	try {
 		console.log("hey the query is ", query);
 
-		const product_by_name: IProduct[] = await Product.find({
+		const product_by_name: Product_Interface[] = await Product.find({
 			$or: [
 				{
 					name: { $regex: query, $options: "i" },
@@ -165,7 +192,7 @@ export const GET_PRODUCT_BY_NAME = async (
 
 export const GET_PRODUCT_BY_CATEGORY = async (
 	query: string
-): Promise<Query_interface<IProduct>> => {
+): Promise<Query_interface<Product_Interface>> => {
 	const action = "Get product by category";
 	try {
 		const getting_by_category = await Product.find({
@@ -231,7 +258,7 @@ export const ADD_PRODUCT_TO_CART = async (
 export const REMOVE_PRODUCT_FROM_CART = async (
 	productid: string,
 	userid: string
-): Promise<Query_interface<IUser>> => {
+): Promise<Query_interface<User_Interface>> => {
 	const action = "Removing product from cart";
 
 	try {
@@ -265,7 +292,7 @@ export const REMOVE_PRODUCT_FROM_CART = async (
 export const ADD_PRODUCT_TO_PURCHASED = async (
 	productid: string,
 	userid: string
-): Promise<Query_interface<IUser>> => {
+): Promise<Query_interface<User_Interface>> => {
 	const action = "purchasing an product";
 	try {
 		const purchasing_product = await User.findByIdAndUpdate(
@@ -299,7 +326,7 @@ export const ADD_PRODUCT_TO_PURCHASED = async (
 
 export const DELETE_PRODUCT = async (
 	id: string
-): Promise<Query_interface<IProduct>> => {
+): Promise<Query_interface<Product_Interface>> => {
 	const action = "Deleting this product";
 
 	try {

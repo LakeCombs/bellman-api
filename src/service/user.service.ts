@@ -1,5 +1,5 @@
 import { Query_interface } from "./../interfaces/query.interface";
-import { IUser, ULogin, UserData } from "./../interfaces/user.interface";
+import { User_Interface } from "./../interfaces/user.interface";
 import User from "../model/user.model";
 import logger from "../utils/logger";
 import { generate_token } from "../middleware/JWT";
@@ -8,51 +8,55 @@ import { FilterQuery, QueryOptions, UpdateQuery } from "mongoose";
 /**
  * @openapi
  * components:
- * 	schemas:
- *		CreateUserInput:
- *			type: object
- *			required:
- *				- email
- *				- first_name
- *				- last_name
- *				- password
- *			properties:
- *				email:
- *					type: string
- *					default: lakecombs@gmail.com
- *				first_name:
- *					type:string
- *					default: lake
- *				last_name:
- *					type:string
- *					default: combs
- *				password:
- *					type:string
- *					default: mypassword1234
- * 		CreateUserResponse:
- *      	type: object
- * 			properties:
- *        		email:
- *     		    	type: string
- *        		first_name:
- *          		type: string
- *        		last_name:
- *          		type: string
- *       		 _id:
- *          		type: string
- *        		createdAt:
- *          		type: string
- *        		updatedAt:
- *          		type: string
+ *  schemas:
+ *    CreateUserInput:
+ *      type: object
+ *      required:
+ *        - email
+ *        - first_name
+ *        - last_name
+ *        - password
+ *        - phone
+ *      properties:
+ *        email:
+ *          type: string
+ *          default: lakecombs@example.com
+ *        first_name:
+ *          type: string
+ *          default: Lake
+ *        last_name:
+ *          type: string
+ *          default: Combs
+ *        password:
+ *          type: string
+ *          default: mypassword123
+ *        passwordConfirmation:
+ *          type: string
+ *          default: stringPassword123
+ *    CreateUserResponse:
+ *      type: object
+ *      properties:
+ *        email:
+ *          type: string
+ *        first_name:
+ *          type: string
+ *        last_name:
+ *          type: string
+ *        _id:
+ *          type: string
+ *        createdAt:
+ *          type: string
+ *        updatedAt:
+ *          type: string
  */
 
 export const CREATE_USER = async (
-	input: IUser
-): Promise<Query_interface<IUser>> => {
+	input: User_Interface
+): Promise<Query_interface<User_Interface>> => {
 	const action = "Creating a  new user";
 
 	try {
-		const new_user: IUser = await User.create(input);
+		const new_user: User_Interface = await User.create(input);
 		return {
 			status: true,
 			action: action,
@@ -122,10 +126,10 @@ export const LOGIN_USER = async ({
 };
 
 export async function UPDATE_USER(
-	query: FilterQuery<IUser>,
-	data: UpdateQuery<IUser>,
+	query: FilterQuery<User_Interface>,
+	data: UpdateQuery<User_Interface>,
 	options: QueryOptions
-): Promise<Query_interface<IUser>> {
+): Promise<Query_interface<User_Interface>> {
 	try {
 		const action = "update user details";
 		const updating = await User.findByIdAndUpdate(query, data, options)

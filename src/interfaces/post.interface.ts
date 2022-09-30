@@ -1,12 +1,12 @@
 import { Document } from "mongoose";
-import { IComment } from "./comment.interface";
-import { IUser } from "./user.interface";
+import { Comment_Interface } from "./comment.interface";
+import { User_Interface } from "./user.interface";
 
-export interface IPost extends Document {
+export interface Post_Interface extends Document {
 	title: string;
 	content: string;
 	image_url: string;
-	author: IUser;
-	likes: IUser[];
-	comments: IComment[];
+	author: User_Interface;
+	likes: User_Interface[];
+	comments: Comment_Interface[];
 }

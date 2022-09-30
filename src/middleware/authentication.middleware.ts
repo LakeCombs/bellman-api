@@ -1,5 +1,5 @@
 import { string } from "zod";
-import { IUser } from "./../interfaces/user.interface";
+import { User_Interface } from "./../interfaces/user.interface";
 import { Request, Response, NextFunction } from "express";
 import { verifyJWT } from "./JWT";
 import User from "../model/user.model";
@@ -41,12 +41,10 @@ export async function auth(req: Request, res: Response, next: NextFunction) {
 	}
 
 	if (!user_token) {
-		return res
-			.status(400)
-			.json({
-				status: false,
-				message:
-					"You are not authorized to perfom this operation please login and try again, no user_token",
-			});
+		return res.status(400).json({
+			status: false,
+			message:
+				"You are not authorized to perfom this operation please login and try again, no user_token",
+		});
 	}
 }

@@ -1,7 +1,7 @@
-import { IComment } from "./../interfaces/comment.interface";
+import { Comment_Interface } from "./../interfaces/comment.interface";
 import mongoose, { Schema } from "mongoose";
 
-const CommentSchema = new mongoose.Schema<IComment>(
+const CommentSchema: Schema = new mongoose.Schema<Comment_Interface>(
 	{
 		post_id: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -14,6 +14,9 @@ const CommentSchema = new mongoose.Schema<IComment>(
 	{ timestamps: true }
 );
 
-const commentModel = mongoose.model<IComment>("Comment", CommentSchema);
+const commentModel = mongoose.model<Comment_Interface>(
+	"Comment",
+	CommentSchema
+);
 
 export default commentModel;

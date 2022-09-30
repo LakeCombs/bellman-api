@@ -1,7 +1,9 @@
+import { User_Interface } from "./user.interface";
+import { Post_Interface } from "./post.interface";
 import { Document } from "mongoose";
 
-export interface IComment extends Document {
-	post_id: string;
+export interface Comment_Interface extends Document {
+	post_id: Post_Interface;
 	comment: string;
-	user_id: string;
+	user_id: User_Interface;
 }
