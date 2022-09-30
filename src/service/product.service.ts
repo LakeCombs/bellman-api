@@ -1,9 +1,8 @@
-import { FilterQuery, Query, QueryOptions, UpdateQuery } from "mongoose";
+import { QueryOptions, UpdateQuery } from "mongoose";
 import { Query_interface } from "./../interfaces/query.interface";
 import { Product_Interface } from "./../interfaces/product.interface";
 import logger from "../utils/logger";
 import Product from "../model/product.model";
-import { IpOptions } from "@hapi/joi";
 import { User_Interface } from "../interfaces/user.interface";
 import User from "../model/user.model";
 
@@ -65,7 +64,6 @@ export const CREATE_PRODUCT = async (
 	const action = "Creating a product";
 
 	try {
-		// const validatedinput = ProductSchema.validate(input);
 		const new_product: Product_Interface = await Product.create(input);
 		return {
 			status: true,
@@ -221,11 +219,10 @@ export const ADD_PRODUCT_TO_CART = async (
 	productid: string,
 	userid: string,
 	options: QueryOptions
-): Promise<Query_interface<IpOptions>> => {
+): Promise<Query_interface<User_Interface>> => {
 	const action = "Adding product to cart";
 
 	try {
-		// const  userid = res.local.user_id
 		const adding_to_cart = await User.findByIdAndUpdate(
 			{ _id: userid },
 			{

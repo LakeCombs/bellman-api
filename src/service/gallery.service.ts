@@ -135,8 +135,8 @@ export const DELETE_GALLERY_POST = async (
 	try {
 		await User.updateMany({
 			$pull: {
-				$in: {
-					my_gallery: id,
+				my_gallery: {
+					$in: [id],
 				},
 			},
 		});
