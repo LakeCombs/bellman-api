@@ -1,6 +1,6 @@
-import { Gallery_Interface } from "./Gallery.interface";
 import { Document } from "mongoose";
 import { Comment_Interface } from "./comment.interface";
+import { Gallery_Interface } from "./gallery.interface";
 
 export interface Product_Interface extends Document {
 	name: string;
@@ -10,5 +10,5 @@ export interface Product_Interface extends Document {
 	category: string[];
 	image_urls: string[];
 	comments: Comment_Interface[];
-	Gallery: Gallery_Interface[];
+	gallery: Gallery_Interface[];
 }

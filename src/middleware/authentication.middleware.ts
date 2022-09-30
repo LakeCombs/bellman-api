@@ -3,7 +3,6 @@ import { User_Interface } from "./../interfaces/user.interface";
 import { Request, Response, NextFunction } from "express";
 import { verifyJWT } from "./JWT";
 import User from "../model/user.model";
-import { Query_interface } from "../interfaces/query.interface";
 import logger from "../utils/logger";
 
 export async function auth(req: Request, res: Response, next: NextFunction) {

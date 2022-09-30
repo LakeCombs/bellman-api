@@ -10,7 +10,7 @@ const product_schema: Schema = new mongoose.Schema<Product_Interface>(
 		image_urls: [{ type: String }],
 		category: [{ type: String }],
 		comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
-		Gallery: [{ type: Schema.Types.ObjectId, ref: "Gallery" }],
+		gallery: [{ type: Schema.Types.ObjectId, ref: "Gallery" }],
 	},
 	{ timestamps: true }
 );
