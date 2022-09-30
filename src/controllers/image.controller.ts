@@ -11,8 +11,9 @@ export async function uploadImageHandler(
 	req: Request,
 	res: Response
 ): Promise<void> {
-	const filepath = req.file?.path;
+	const filepath: any = req.files;
 	const service = await UPLOAD_IMAGE(filepath);
+
 	service.status
 		? res.status(200).json(service)
 		: res.status(404).json(service);

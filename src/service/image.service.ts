@@ -3,25 +3,34 @@ import { Image_interface } from "../interfaces/image.interface";
 import { Query_interface } from "../interfaces/query.interface";
 import Image from "../model/image.model";
 import logger from "../utils/logger";
+import fs from "fs";
 
 export const UPLOAD_IMAGE = async (
-	filepath: any
+	filepath: any[]
 ): Promise<Query_interface<Image_interface>> => {
 	const action = "upload image";
 	try {
-		const result = await cloudinary.uploader.upload(filepath, {
-			folder: "bellman",
-		});
-		let new_image = await Image.create({
-			image: result.secure_url,
-			cloudinary_id: result.public_id,
-		});
+		const uploader = async (path: any) => {
+			return await cloudinary.uploader.upload(path, {
+				folder: "bellman",
+			});
+		};
 
+		const urls = [];
+		for (const file of filepath) {
+			const newPath = await uploader(file.path);
+			urls.push({
+				image: newPath?.secure_url,
+				cloudinary_id: newPath?.public_id,
+			});
+		}
+
+		let new_image = await Image.create(urls);
 		logger.info(`an image have been uploaded`);
 		return {
 			status: true,
 			action: action,
-			message: "You have created this post",
+			message: "You have uploaded some photo",
 			data: new_image,
 		};
 	} catch (error: any) {
