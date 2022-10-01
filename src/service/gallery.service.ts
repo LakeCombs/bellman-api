@@ -39,6 +39,8 @@ export const GET_ALL_GALLERY_FOR_PRODUCT = async (
 		const gallery: Gallery_Interface[] = await Gallery.find({
 			product: id,
 		});
+
+		console.log("the gallery is ", id);
 		logger.info("you have fetched all the gallery for this product");
 		return {
 			status: true,

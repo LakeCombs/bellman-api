@@ -13,7 +13,7 @@ export async function CreateGalleryPostHandler(
 	res: Response
 ): Promise<void> {
 	const productid = req.params.id;
-	const userid = res.locals.user_id;
+	const userid = res.locals.user_id.decoded.payload;
 
 	const service = await POST_IN_Gallery({
 		productid,
