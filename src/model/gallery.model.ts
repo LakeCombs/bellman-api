@@ -5,7 +5,7 @@ const GallerySchema: Schema = new Schema<Gallery_Interface>(
 	{
 		post: { type: String },
 		image: [{ type: String, required: true }],
-		comment: { type: String },
+		comment: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 		product: { type: Schema.Types.ObjectId, ref: "Product" },
 		user: { type: Schema.Types.ObjectId, ref: "User" },
 	},
